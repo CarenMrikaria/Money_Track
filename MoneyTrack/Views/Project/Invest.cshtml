@@ -1,0 +1,112 @@
+﻿@model MoneyTrack.Models.Project
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Styles as in your current form */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Invest in Project</h1>
+
+        <div class="project-details">
+            <h2>@Model.ProjectName</h2>
+            <p><strong>Description:</strong> @Model.ProjectDescription</p>
+            <p><strong>Target:</strong> $@Model.Target.ToString("N2")</p>
+            <p><strong>Start Date:</strong> @Model.StartDate.ToShortDateString()</p>
+            <p><strong>End Date:</strong> @Model.EndDate.ToShortDateString()</p>
+            <p><strong>Status:</strong> @Model.Status</p>
+        </div>
+
+        <!-- Form to handle investment -->
+        <form id="investmentForm" asp-action="ProcessInvestment" method="post">
+            <input type="hidden" name="projectId" value="@Model.ProjectId" />  <!-- Hidden input for project ID -->
+
+            <div class="form-group">
+                <label for="investmentAmount">Investment Amount ($)</label>
+                <input type="number" id="investmentAmount" name="investmentAmount" required min="1" step="0.01">
+                <span class="error" id="amountError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="cardNumber">Card Number</label>
+                <input type="text" id="cardNumber" name="cardNumber" required maxlength="16">
+                <span class="error" id="cardError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="expiryDate">Expiry Date (MM/YY)</label>
+                <input type="text" id="expiryDate" name="expiryDate" required maxlength="5">
+                <span class="error" id="expiryError"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="cvv">CVV</label>
+                <input type="text" id="cvv" name="cvv" required maxlength="3">
+                <span class="error" id="cvvError"></span>
+            </div>
+
+            <button type="submit" class="submit-btn">Invest Now</button>
+        </form>
+    </div>
+
+    <!-- Success Toast -->
+    <div id="successToast" class="toast">
+        Investment successful! Thank you for your contribution.
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('investmentForm');
+            const toast = document.getElementById('successToast');
+
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                if (validateForm()) {
+                    form.submit();  // Submit form when all validation is successful
+                }
+            });
+
+            function validateForm() {
+                let isValid = true;
+                const amount = document.getElementById('investmentAmount');
+                const cardNumber = document.getElementById('cardNumber');
+                const expiryDate = document.getElementById('expiryDate');
+                const cvv = document.getElementById('cvv');
+
+                // Clear previous errors
+                document.querySelectorAll('.error').forEach(el => el.textContent = '');
+
+                // Validate amount
+                if (amount.value <= 0) {
+                    document.getElementById('amountError').textContent = 'Please enter a valid amount.';
+                    isValid = false;
+                }
+
+                // Validate card number
+                if (!/^\d{16}$/.test(cardNumber.value)) {
+                    document.getElementById('cardError').textContent = 'Please enter a valid 16-digit card number.';
+                    isValid = false;
+                }
+
+                // Validate expiry date
+                if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiryDate.value)) {
+                    document.getElementById('expiryError').textContent = 'Please enter a valid expiry date (MM/YY).';
+                    isValid = false;
+                }
+
+                // Validate CVV
+                if (!/^\d{3}$/.test(cvv.value)) {
+                    document.getElementById('cvvError').textContent = 'Please enter a valid 3-digit CVV.';
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+        });
+    </script>
+</body>
+</html>

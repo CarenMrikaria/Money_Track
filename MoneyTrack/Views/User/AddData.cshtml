@@ -1,0 +1,40 @@
+﻿@model MoneyTrack.Models.User
+<center>
+    <h1>Add Data Example:</h1>
+    <hr /> 
+    <form asp-action="AddData" method="post"> 
+        <table> 
+            <tr> 
+                <th><label asp-for="FirstName"></label> </th> 
+                <td><input asp-for="FirstName" required /></td> 
+                <td><span asp-validation-for="FirstName"></span></td>
+            </tr>
+            <tr> 
+                <th><label asp-for="LastName"></label> </th> 
+                <td><input asp-for="LastName" required /></td>
+                <td><span asp-validation-for="LastName"></span></td>
+            </tr> 
+            <tr> 
+                <th><label asp-for="Email"></label> </th>
+                <td><input asp-for="Email" required /></td>
+                <td><span asp-validation-for="Email"></span></td>
+            </tr> 
+            <tr> 
+                <th><label asp-for="DateRegistered"></label> </th> 
+                <td><input asp-for="DateRegistered" required /></td>
+                <td><span asp-validation-for="DateRegistered"></span></td>
+            </tr> 
+            <tr> <td colspan="2">
+                <input type="submit" name="submit" value="Add Data to table" />
+                </td> 
+             </tr> 
+        </table>
+    </form>
+</center>
+@{
+    ViewData["Title"] = "AddData";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>AddData</h1>
+

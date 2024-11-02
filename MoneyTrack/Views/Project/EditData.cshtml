@@ -1,0 +1,49 @@
+﻿@model MoneyTrack.Models.Project
+
+<center>
+    <h1>Edit Current Project Information:</h1>
+    <br /><hr /><br />
+    <form method="post" asp-action="UpdateData" asp-controller="Project">
+        <table border='1'>
+            <tr>
+                <th><label asp-for="ProjectId"></label></th>
+                <td><input asp-for="ProjectId" readonly /></td>
+            </tr>
+            <tr>
+                <th><label asp-for="ProjectName"></label></th>
+                <td><input asp-for="ProjectName" /></td>
+                <td><span asp-validation-for="ProjectName"></span></td>
+            </tr>
+            <tr>
+                <th><label asp-for="ProjectDescription"></label></th>
+                <td><input asp-for="ProjectDescription" /></td>
+                <td><span asp-validation-for="ProjectDescription"></span></td>
+            </tr>
+            <tr>
+                <th><label asp-for="Target"></label></th>
+                <td><input asp-for="Target" /></td>
+                <td><span asp-validation-for="Target"></span></td>
+            </tr>
+            <tr>
+                <th><label asp-for="StartDate"></label></th>
+                <td><input asp-for="StartDate" /></td>
+                <td><span asp-validation-for="StartDate"></span></td>
+            </tr>
+            <tr>
+                <th><label asp-for="EndDate"></label></th>
+                <td><input asp-for="EndDate" /></td>
+                <td><span asp-validation-for="EndDate"></span></td>
+            </tr>
+            <tr>
+                <th><label asp-for="Status"></label></th>
+                <td><input asp-for="Status" /></td>
+                <td><span asp-validation-for="Status"></span></td>
+            </tr>
+            <tr>
+                <td colspan="3" style="text-align:center">
+                    <button type="submit" class="btn-info">Update Project Information</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</center>

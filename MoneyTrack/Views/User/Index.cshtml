@@ -1,0 +1,28 @@
+﻿@model List<MoneyTrack.Areas.Identity.Data.MoneyTrackUser>
+<h1>User Management</h1>
+
+<center>
+    <table border="1">
+        <tr style="background-color: turquoise;">
+            <th>User ID</th>
+            <th>Full Name</th> <!-- Display full name -->
+            <th>Email</th>
+            <th>Role</th> <!-- Display the user's role -->
+            <th>Update Action</th>
+            <th>Delete Action</th>
+        </tr>
+        @foreach (var user in Model)
+        {
+                <tr>
+                    <td>@user.Id</td> <!-- User ID -->
+                    <td>@user.CustomerFullName</td> <!-- Full Name (from your model) -->
+                    <td>@user.Email</td> <!-- Email -->
+                    <td>@user.userrole</td> <!-- User's Role -->
+                    <form asp-action="EditData" asp-controller="User" asp-route-id="@user.Id">
+                        <td><button>Edit</button></td>
+                        <td><button asp-action="DeleteData" asp-controller="User" asp-route-id="@user.Id">Delete</button></td>
+                    </form>
+                </tr>
+        }
+    </table>
+</center>

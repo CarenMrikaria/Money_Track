@@ -1,0 +1,51 @@
+﻿@model MoneyTrack.Areas.Identity.Data.MoneyTrackUser
+
+<center>
+    <h1>Edit User Information:</h1>
+    <br /><hr /><br />
+    <form method="post" asp-action="UpdateData" asp-controller="User">
+        <table border='1'>
+            <tr>
+                <th><label asp-for="Id">User ID</label></th>
+                <td><input asp-for="Id" readonly /></td>
+            </tr>
+            <tr>
+                <th><label asp-for="CustomerFullName">Full Name</label></th>
+                <td><input asp-for="CustomerFullName" readonly /></td>
+                <td><span asp-validation-for="CustomerFullName"></span></td>
+            </tr>
+            <tr>
+                <th><label asp-for="Email">Email</label></th>
+                <td><input asp-for="Email" /></td>
+                <td><span asp-validation-for="Email"></span></td>
+            </tr>
+            <tr>
+                <th><label for="role">Role</label></th>
+                <td>
+                    <select id="role" name="role">
+                        @foreach (var role in ViewBag.Roles)
+                        {
+                            if (ViewBag.UserRoles.Contains(role))
+                            {
+                                <option value="@role" selected="selected">@role</option>
+                            }
+                            else
+                            {
+                                <option value="@role">@role</option>
+                            }
+                        }
+                    </select>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td colspan="3" style="text-align:center">
+                    <button type="submit" class="btn-info">Update User Information</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</center>

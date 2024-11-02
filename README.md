@@ -1,0 +1,1 @@
+To run this project navigate to 'MoneyTrack/', then in the root directory execute 'dotnet run'

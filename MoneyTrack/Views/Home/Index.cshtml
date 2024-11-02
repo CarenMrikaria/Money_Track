@@ -1,0 +1,143 @@
+﻿@model List<MoneyTrack.Models.Project>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoneyTrack - Invest in Renewable Energy</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            background-color: #2ecc71;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        nav {
+            background-color: #27ae60;
+            padding: 0.5rem;
+        }
+
+            nav ul {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+                display: flex;
+                justify-content: center;
+            }
+
+                nav ul li {
+                    margin: 0 1rem;
+                }
+
+                    nav ul li a {
+                        color: white;
+                        text-decoration: none;
+                    }
+
+        main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: #e74c3c;
+            color: white;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+            .cta-button:hover {
+                background-color: #c0392b;
+            }
+
+        .project-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .progress-bar {
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            height: 10px;
+            margin-top: 10px;
+        }
+
+        .progress-bar-fill {
+            background-color: #2ecc71;
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.5s ease-out;
+        }
+
+        footer {
+            background-color: #34495e;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    
+    <main>
+        <section id="home">
+            <h2>Welcome to MoneyTrack</h2>
+            <p>Join us in shaping a sustainable future by investing in renewable energy projects. Our platform connects investors with innovative green energy initiatives worldwide.</p>
+            <a href="..\Project\Index" class="cta-button">Explore Projects</a>
+        </section>
+
+        <section id="projects">
+            <h2>Featured Projects</h2>
+            <div class="project-list">
+                @if (Model != null)
+                {
+                    @foreach (var project in Model)
+                    {
+                        var progressPercentage = project.Target > 0 ? (project.currentAmount / project.Target) * 100 : 0;
+                        <div class="project-card">
+                            <h3>@project.ProjectName</h3>
+                            <p>Location: @project.Location</p>
+                            <p>Target: $@project.Target.ToString("N")</p>
+                            <p>Current: $@project.currentAmount.ToString("N")</p>
+                            <p>Progress: @progressPercentage.ToString("F2")%</p>
+                            <div class="progress-bar">
+                                <div class="progress-bar-fill" style="width: @progressPercentage%;"></div>
+                            </div>
+                            <a href="@Url.Action("Invest", "Project", new { id = project.ProjectId })" class="cta-button" style="margin-top: 1rem;">Invest Now</a>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No projects available at the moment.</p>
+                }
+            </div>
+        </section>
+    </main>
+    
+</body>
+</html>

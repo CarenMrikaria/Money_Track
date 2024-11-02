@@ -1,0 +1,202 @@
+﻿@model MoneyTrack.Models.Project
+@{
+    ViewData["Title"] = "Add New Project";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (User.IsInRole("Admin"))
+{
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 100px;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+            .submit-btn:hover {
+                background-color: #45a049;
+            }
+    </style>
+
+    <div class="container">
+        <h1>Add New Project</h1>
+        <form asp-action="AddData" method="post" id="addProjectForm">
+            <div class="form-group">
+                <label asp-for="ProjectName">Project Name</label>
+                <input asp-for="ProjectName" type="text" required />
+                <span asp-validation-for="ProjectName" class="error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectDescription">Project Description</label>
+                <textarea asp-for="ProjectDescription" required></textarea>
+                <span asp-validation-for="ProjectDescription" class="error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location">Location</label>
+                <input asp-for="Location" type="text" required />
+                <span asp-validation-for="Location" class="error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Type">Type</label>
+                <select asp-for="Type" required>
+                    <option value="">Select Project Type</option>
+                    <option value="Solar">Solar</option>
+                    <option value="Wind">Wind</option>
+                    <option value="Hydro">Hydro</option>
+                    <option value="Geothermal">Geothermal</option>
+                    <option value="Biomass">Biomass</option>
+                </select>
+                <span asp-validation-for="Type" class="error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Target">Target (Funding Goal)</label>
+                <input asp-for="Target" type="number" step="0.01" required />
+                <span asp-validation-for="Target" class="error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="currentAmount">Current Amount Raised</label>
+                <input asp-for="currentAmount" type="number" step="0.01" value="0" required />
+                <span asp-validation-for="currentAmount" class="error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate">Start Date</label>
+                <input asp-for="StartDate" type="date" required />
+                <span asp-validation-for="StartDate" class="error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate">End Date</label>
+                <input asp-for="EndDate" type="date" required />
+                <span asp-validation-for="EndDate" class="error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status">Status</label>
+                <select asp-for="Status" required>
+                    <option value="">Select Status</option>
+                    <option value="Not Started">Not Started</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="On Hold">On Hold</option>
+                </select>
+                <span asp-validation-for="Status" class="error"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add Project" class="submit-btn" />
+            </div>
+        </form>
+    </div>
+}
+else
+{
+    <p>You do not have permission to add a project.</p>
+}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('addProjectForm');
+        const endDateInput = document.getElementById('EndDate');
+        const startDateInput = document.getElementById('StartDate');
+
+        form.addEventListener('submit', function (event) {
+            let isValid = true;
+
+            // Clear previous error messages
+            document.querySelectorAll('.error').forEach(function (el) {
+                el.textContent = '';
+            });
+
+            // Validate Project Name
+            const projectName = document.getElementById('ProjectName');
+            if (projectName.value.trim() === '') {
+                document.querySelector('[asp-validation-for="ProjectName"]').textContent = 'Project Name is required.';
+                isValid = false;
+            }
+
+            // Validate Project Description
+            const projectDescription = document.getElementById('ProjectDescription');
+            if (projectDescription.value.trim() === '') {
+                document.querySelector('[asp-validation-for="ProjectDescription"]').textContent = 'Project Description is required.';
+                isValid = false;
+            }
+
+            // Validate Target
+            const Target = document.getElementById('Target');
+            if (Target.value.trim() === '' || isNaN(Target.value) || parseFloat(Target.value) < 0) {
+                document.querySelector('[asp-validation-for="Target"]').textContent = 'Please enter a valid Target amount.';
+                isValid = false;
+            }
+
+            // Validate Start Date
+            if (startDateInput.value === '') {
+                document.querySelector('[asp-validation-for="StartDate"]').textContent = 'Start Date is required.';
+                isValid = false;
+            }
+
+            // Validate End Date
+            if (endDateInput.value === '') {
+                document.querySelector('[asp-validation-for="EndDate"]').textContent = 'End Date is required.';
+                isValid = false;
+            } else if (new Date(endDateInput.value) < new Date(startDateInput.value)) {
+                document.querySelector('[asp-validation-for="EndDate"]').textContent = 'End Date must be after or equal to the Start Date.';
+                isValid = false;
+            }
+
+            // Validate Status
+            const status = document.getElementById('Status');
+            if (status.value === '') {
+                document.querySelector('[asp-validation-for="Status"]').textContent = 'Please select a status.';
+                isValid = false;
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
